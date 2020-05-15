@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">medflic</string>
     <string name="title_activity_example">ExampleActivity</string>
     <string name="example_activity_title">Example activity</string>

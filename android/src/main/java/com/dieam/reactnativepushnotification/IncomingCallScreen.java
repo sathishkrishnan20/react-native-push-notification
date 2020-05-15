@@ -1,4 +1,4 @@
-package com.dieam.reactnativepushnotification.modules;
+package com.dieam.reactnativepushnotification;
 
 
 import android.app.Activity;
@@ -51,7 +51,7 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
                 WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
                 WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
-        setContentView(R.layout.activity_example);
+        setContentView(R.layout.activity_incoming_call_screen);
 
         // Display app and React Native versions:
 
