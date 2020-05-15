@@ -157,250 +157,287 @@ public class RNPushNotificationHelper {
 
             Resources res = context.getResources();
             String packageName = context.getPackageName();
+            Boolean hasFullScreenIntent =  bundle.getBoolean("fullScreenIntent", false);
+            if (hasFullScreenIntent == true) {
+                String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
-            String title = bundle.getString("title");
-            if (title == null) {
-                ApplicationInfo appInfo = context.getApplicationInfo();
-                title = context.getPackageManager().getApplicationLabel(appInfo).toString();
-            }
+                Intent fullScreenIntent = new Intent(context, IncomingCallScreen.class);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "MEDFLIC_PT_CHANNEL", NotificationManager.IMPORTANCE_HIGH);
 
-            int priority = NotificationCompat.PRIORITY_HIGH;
-            final String priorityString = bundle.getString("priority");
-
-            if (priorityString != null) {
-                switch(priorityString.toLowerCase()) {
-                    case "max":
-                        priority = NotificationCompat.PRIORITY_MAX;
-                        break;
-                    case "high":
-                        priority = NotificationCompat.PRIORITY_HIGH;
-                        break;
-                    case "low":
-                        priority = NotificationCompat.PRIORITY_LOW;
-                        break;
-                    case "min":
-                        priority = NotificationCompat.PRIORITY_MIN;
-                        break;
-                    case "default":
-                        priority = NotificationCompat.PRIORITY_DEFAULT;
-                        break;
-                    default:
-                        priority = NotificationCompat.PRIORITY_HIGH;
+                    // Configure the notification channel.
+                    notificationChannel.setDescription("Channel description");
+                    notificationChannel.enableLights(true);
+                    notificationChannel.setLightColor(Color.rgb(0,0,0));
+                    notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                    notificationChannel.enableVibration(true);
+                    notificationManager.createNotificationChannel(notificationChannel);
                 }
-            }
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, fullScreenIntent, 0);
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
+                String smallIcon = bundle.getString("smallIcon");
+                notificationBuilder.setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_ALL)
+                        .setCategory(Notification.CATEGORY_CALL)
+                        .setOngoing(true)
+                        .setWhen(System.currentTimeMillis())
+                        .setSmallIcon(res.getIdentifier(smallIcon, "mipmap", packageName))
+                        .setTicker("Hearty365")
+                        .setPriority(Notification.PRIORITY_MAX)
+                        .setContentTitle("Default notification")
+                        .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                        .setFullScreenIntent(pendingIntent,true)
+                        .setContentInfo("Info");
+                notificationManager.notify(/*notification id*/Integer.parseInt(notificationIdString), notificationBuilder.build());
 
-            int visibility = NotificationCompat.VISIBILITY_PRIVATE;
-            final String visibilityString = bundle.getString("visibility");
 
-            if (visibilityString != null) {
-                switch(visibilityString.toLowerCase()) {
-                    case "private":
-                        visibility = NotificationCompat.VISIBILITY_PRIVATE;
-                        break;
-                    case "public":
-                        visibility = NotificationCompat.VISIBILITY_PUBLIC;
-                        break;
-                    case "secret":
-                        visibility = NotificationCompat.VISIBILITY_SECRET;
-                        break;
-                    default:
-                        visibility = NotificationCompat.VISIBILITY_PRIVATE;
-                }
-            }
 
-            NotificationCompat.Builder notification = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                    .setContentTitle(title)
-                    .setTicker(bundle.getString("ticker"))
-                    .setVisibility(visibility)
-                    .setPriority(priority)
-                    .setAutoCancel(bundle.getBoolean("autoCancel", true));
-
-            String group = bundle.getString("group");
-            if (group != null) {
-                notification.setGroup(group);
-            }
-
-            notification.setContentText(bundle.getString("message"));
-
-            String largeIcon = bundle.getString("largeIcon");
-
-            String subText = bundle.getString("subText");
-
-            if (subText != null) {
-                notification.setSubText(subText);
-            }
-
-            String numberString = bundle.getString("number");
-            if (numberString != null) {
-                notification.setNumber(Integer.parseInt(numberString));
-            }
-
-            int smallIconResId;
-            int largeIconResId;
-
-            String smallIcon = bundle.getString("smallIcon");
-
-            if (smallIcon != null) {
-                smallIconResId = res.getIdentifier(smallIcon, "mipmap", packageName);
             } else {
-                smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
-            }
+                String title = bundle.getString("title");
+                if (title == null) {
+                    ApplicationInfo appInfo = context.getApplicationInfo();
+                    title = context.getPackageManager().getApplicationLabel(appInfo).toString();
+                }
 
-            if (smallIconResId == 0) {
-                smallIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
+                int priority = NotificationCompat.PRIORITY_HIGH;
+                final String priorityString = bundle.getString("priority");
+
+                if (priorityString != null) {
+                    switch (priorityString.toLowerCase()) {
+                        case "max":
+                            priority = NotificationCompat.PRIORITY_MAX;
+                            break;
+                        case "high":
+                            priority = NotificationCompat.PRIORITY_HIGH;
+                            break;
+                        case "low":
+                            priority = NotificationCompat.PRIORITY_LOW;
+                            break;
+                        case "min":
+                            priority = NotificationCompat.PRIORITY_MIN;
+                            break;
+                        case "default":
+                            priority = NotificationCompat.PRIORITY_DEFAULT;
+                            break;
+                        default:
+                            priority = NotificationCompat.PRIORITY_HIGH;
+                    }
+                }
+
+                int visibility = NotificationCompat.VISIBILITY_PRIVATE;
+                final String visibilityString = bundle.getString("visibility");
+
+                if (visibilityString != null) {
+                    switch (visibilityString.toLowerCase()) {
+                        case "private":
+                            visibility = NotificationCompat.VISIBILITY_PRIVATE;
+                            break;
+                        case "public":
+                            visibility = NotificationCompat.VISIBILITY_PUBLIC;
+                            break;
+                        case "secret":
+                            visibility = NotificationCompat.VISIBILITY_SECRET;
+                            break;
+                        default:
+                            visibility = NotificationCompat.VISIBILITY_PRIVATE;
+                    }
+                }
+
+                NotificationCompat.Builder notification = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                        .setContentTitle(title)
+                        .setTicker(bundle.getString("ticker"))
+                        .setVisibility(visibility)
+                        .setPriority(priority)
+                        .setAutoCancel(bundle.getBoolean("autoCancel", true));
+
+                String group = bundle.getString("group");
+                if (group != null) {
+                    notification.setGroup(group);
+                }
+
+                notification.setContentText(bundle.getString("message"));
+
+                String largeIcon = bundle.getString("largeIcon");
+
+                String subText = bundle.getString("subText");
+
+                if (subText != null) {
+                    notification.setSubText(subText);
+                }
+
+                String numberString = bundle.getString("number");
+                if (numberString != null) {
+                    notification.setNumber(Integer.parseInt(numberString));
+                }
+
+                int smallIconResId;
+                int largeIconResId;
+
+                String smallIcon = bundle.getString("smallIcon");
+
+                if (smallIcon != null) {
+                    smallIconResId = res.getIdentifier(smallIcon, "mipmap", packageName);
+                } else {
+                    smallIconResId = res.getIdentifier("ic_notification", "mipmap", packageName);
+                }
 
                 if (smallIconResId == 0) {
-                    smallIconResId = android.R.drawable.ic_dialog_info;
+                    smallIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
+
+                    if (smallIconResId == 0) {
+                        smallIconResId = android.R.drawable.ic_dialog_info;
+                    }
                 }
-            }
 
-            if (largeIcon != null) {
-                largeIconResId = res.getIdentifier(largeIcon, "mipmap", packageName);
-            } else {
-                largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
-            }
+                if (largeIcon != null) {
+                    largeIconResId = res.getIdentifier(largeIcon, "mipmap", packageName);
+                } else {
+                    largeIconResId = res.getIdentifier("ic_launcher", "mipmap", packageName);
+                }
 
-            Bitmap largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
+                Bitmap largeIconBitmap = BitmapFactory.decodeResource(res, largeIconResId);
 
-            if (largeIconResId != 0 && (largeIcon != null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)) {
-                notification.setLargeIcon(largeIconBitmap);
-            }
+                if (largeIconResId != 0 && (largeIcon != null || Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)) {
+                    notification.setLargeIcon(largeIconBitmap);
+                }
 
-            notification.setSmallIcon(smallIconResId);
-            String bigText = bundle.getString("bigText");
+                notification.setSmallIcon(smallIconResId);
+                String bigText = bundle.getString("bigText");
 
-            if (bigText == null) {
-                bigText = bundle.getString("message");
-            }
+                if (bigText == null) {
+                    bigText = bundle.getString("message");
+                }
 
-            notification.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
+                notification.setStyle(new NotificationCompat.BigTextStyle().bigText(bigText));
 
-            Intent intent = new Intent(context, intentClass);
-            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            bundle.putBoolean("userInteraction", true);
-            intent.putExtra("notification", bundle);
+                Intent intent = new Intent(context, intentClass);
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                bundle.putBoolean("userInteraction", true);
+                intent.putExtra("notification", bundle);
 
-            if (!bundle.containsKey("playSound") || bundle.getBoolean("playSound")) {
-                Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                String soundName = bundle.getString("soundName");
-                if (soundName != null) {
-                    if (!"default".equalsIgnoreCase(soundName)) {
+                if (!bundle.containsKey("playSound") || bundle.getBoolean("playSound")) {
+                    Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    String soundName = bundle.getString("soundName");
+                    if (soundName != null) {
+                        if (!"default".equalsIgnoreCase(soundName)) {
 
-                        // sound name can be full filename, or just the resource name.
-                        // So the strings 'my_sound.mp3' AND 'my_sound' are accepted
-                        // The reason is to make the iOS and android javascript interfaces compatible
+                            // sound name can be full filename, or just the resource name.
+                            // So the strings 'my_sound.mp3' AND 'my_sound' are accepted
+                            // The reason is to make the iOS and android javascript interfaces compatible
 
-                        int resId;
-                        if (context.getResources().getIdentifier(soundName, "raw", context.getPackageName()) != 0) {
-                            resId = context.getResources().getIdentifier(soundName, "raw", context.getPackageName());
-                        } else {
-                            soundName = soundName.substring(0, soundName.lastIndexOf('.'));
-                            resId = context.getResources().getIdentifier(soundName, "raw", context.getPackageName());
+                            int resId;
+                            if (context.getResources().getIdentifier(soundName, "raw", context.getPackageName()) != 0) {
+                                resId = context.getResources().getIdentifier(soundName, "raw", context.getPackageName());
+                            } else {
+                                soundName = soundName.substring(0, soundName.lastIndexOf('.'));
+                                resId = context.getResources().getIdentifier(soundName, "raw", context.getPackageName());
+                            }
+
+                            soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + resId);
+                        }
+                    }
+                    notification.setSound(soundUri);
+                }
+
+                if (bundle.containsKey("ongoing") || bundle.getBoolean("ongoing")) {
+                    notification.setOngoing(bundle.getBoolean("ongoing"));
+                }
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    notification.setCategory(NotificationCompat.CATEGORY_CALL);
+
+                    String color = bundle.getString("color");
+                    int defaultColor = this.config.getNotificationColor();
+                    if (color != null) {
+                        notification.setColor(Color.parseColor(color));
+                    } else if (defaultColor != -1) {
+                        notification.setColor(defaultColor);
+                    }
+                }
+
+                int notificationID = Integer.parseInt(notificationIdString);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationID, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+
+                NotificationManager notificationManager = notificationManager();
+                checkOrCreateChannel(notificationManager);
+
+                notification.setContentIntent(pendingIntent);
+
+                if (!bundle.containsKey("vibrate") || bundle.getBoolean("vibrate")) {
+                    long vibration = bundle.containsKey("vibration") ? (long) bundle.getDouble("vibration") : DEFAULT_VIBRATION;
+                    if (vibration == 0)
+                        vibration = DEFAULT_VIBRATION;
+                    notification.setVibrate(new long[]{0, vibration});
+                }
+
+                JSONArray actionsArray = null;
+                try {
+                    actionsArray = bundle.getString("actions") != null ? new JSONArray(bundle.getString("actions")) : null;
+                } catch (JSONException e) {
+                    Log.e(LOG_TAG, "Exception while converting actions to JSON object.", e);
+                }
+
+                if (actionsArray != null) {
+                    // No icon for now. The icon value of 0 shows no icon.
+                    int icon = 0;
+
+                    // Add button for each actions.
+                    for (int i = 0; i < actionsArray.length(); i++) {
+                        String action;
+                        try {
+                            action = actionsArray.getString(i);
+                        } catch (JSONException e) {
+                            Log.e(LOG_TAG, "Exception while getting action from actionsArray.", e);
+                            continue;
                         }
 
-                        soundUri = Uri.parse("android.resource://" + context.getPackageName() + "/" + resId);
+                        Intent actionIntent = new Intent(context, intentClass);
+                        actionIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        actionIntent.setAction(context.getPackageName() + "." + action);
+
+                        // Add "action" for later identifying which button gets pressed.
+                        bundle.putString("action", action);
+                        actionIntent.putExtra("notification", bundle);
+
+                        PendingIntent pendingActionIntent = PendingIntent.getActivity(context, notificationID, actionIntent,
+                                PendingIntent.FLAG_UPDATE_CURRENT);
+                        notification.addAction(icon, action, pendingActionIntent);
                     }
                 }
-                notification.setSound(soundUri);
-            }
 
-            if (bundle.containsKey("ongoing") || bundle.getBoolean("ongoing")) {
-                notification.setOngoing(bundle.getBoolean("ongoing"));
-            }
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                notification.setCategory(NotificationCompat.CATEGORY_CALL);
-
-                String color = bundle.getString("color");
-                int defaultColor = this.config.getNotificationColor();
-                if (color != null) {
-                    notification.setColor(Color.parseColor(color));
-                } else if (defaultColor != -1) {
-                    notification.setColor(defaultColor);
+                // Remove the notification from the shared preferences once it has been shown
+                // to avoid showing the notification again when the phone is rebooted. If the
+                // notification is not removed, then every time the phone is rebooted, we will
+                // try to reschedule all the notifications stored in shared preferences and since
+                // these notifications will be in the past time, they will be shown immediately
+                // to the user which we shouldn't do. So, remove the notification from the shared
+                // preferences once it has been shown to the user. If it is a repeating notification
+                // it will be scheduled again.
+                if (scheduledNotificationsPersistence.getString(notificationIdString, null) != null) {
+                    SharedPreferences.Editor editor = scheduledNotificationsPersistence.edit();
+                    editor.remove(notificationIdString);
+                    commit(editor);
                 }
-            }
 
-            int notificationID = Integer.parseInt(notificationIdString);
+                Notification info = notification.build();
+                info.defaults |= Notification.DEFAULT_LIGHTS;
 
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationID, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
-
-            NotificationManager notificationManager = notificationManager();
-            checkOrCreateChannel(notificationManager);
-
-            notification.setContentIntent(pendingIntent);
-
-            if (!bundle.containsKey("vibrate") || bundle.getBoolean("vibrate")) {
-                long vibration = bundle.containsKey("vibration") ? (long) bundle.getDouble("vibration") : DEFAULT_VIBRATION;
-                if (vibration == 0)
-                    vibration = DEFAULT_VIBRATION;
-                notification.setVibrate(new long[]{0, vibration});
-            }
-
-            JSONArray actionsArray = null;
-            try {
-                actionsArray = bundle.getString("actions") != null ? new JSONArray(bundle.getString("actions")) : null;
-            } catch (JSONException e) {
-                Log.e(LOG_TAG, "Exception while converting actions to JSON object.", e);
-            }
-
-            if (actionsArray != null) {
-                // No icon for now. The icon value of 0 shows no icon.
-                int icon = 0;
-
-                // Add button for each actions.
-                for (int i = 0; i < actionsArray.length(); i++) {
-                    String action;
-                    try {
-                        action = actionsArray.getString(i);
-                    } catch (JSONException e) {
-                        Log.e(LOG_TAG, "Exception while getting action from actionsArray.", e);
-                        continue;
-                    }
-
-                    Intent actionIntent = new Intent(context, intentClass);
-                    actionIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    actionIntent.setAction(context.getPackageName() + "." + action);
-
-                    // Add "action" for later identifying which button gets pressed.
-                    bundle.putString("action", action);
-                    actionIntent.putExtra("notification", bundle);
-
-                    PendingIntent pendingActionIntent = PendingIntent.getActivity(context, notificationID, actionIntent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
-                    notification.addAction(icon, action, pendingActionIntent);
+                if (bundle.containsKey("tag")) {
+                    String tag = bundle.getString("tag");
+                    notificationManager.notify(tag, notificationID, info);
+                } else {
+                    notificationManager.notify(notificationID, info);
                 }
+
+                // Can't use setRepeating for recurring notifications because setRepeating
+                // is inexact by default starting API 19 and the notifications are not fired
+                // at the exact time. During testing, it was found that notifications could
+                // late by many minutes.
+                this.scheduleNextNotificationIfRepeating(bundle);
             }
-
-            // Remove the notification from the shared preferences once it has been shown
-            // to avoid showing the notification again when the phone is rebooted. If the
-            // notification is not removed, then every time the phone is rebooted, we will
-            // try to reschedule all the notifications stored in shared preferences and since
-            // these notifications will be in the past time, they will be shown immediately
-            // to the user which we shouldn't do. So, remove the notification from the shared
-            // preferences once it has been shown to the user. If it is a repeating notification
-            // it will be scheduled again.
-            if (scheduledNotificationsPersistence.getString(notificationIdString, null) != null) {
-                SharedPreferences.Editor editor = scheduledNotificationsPersistence.edit();
-                editor.remove(notificationIdString);
-                commit(editor);
-            }
-
-            Notification info = notification.build();
-            info.defaults |= Notification.DEFAULT_LIGHTS;
-
-            if (bundle.containsKey("tag")) {
-                String tag = bundle.getString("tag");
-                notificationManager.notify(tag, notificationID, info);
-            } else {
-                notificationManager.notify(notificationID, info);
-            }
-
-            // Can't use setRepeating for recurring notifications because setRepeating
-            // is inexact by default starting API 19 and the notifications are not fired
-            // at the exact time. During testing, it was found that notifications could
-            // late by many minutes.
-            this.scheduleNextNotificationIfRepeating(bundle);
         } catch (Exception e) {
             Log.e(LOG_TAG, "failed to send push notification", e);
         }
