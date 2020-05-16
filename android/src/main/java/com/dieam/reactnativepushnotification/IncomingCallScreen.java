@@ -1,10 +1,11 @@
-package com.dieam.reactnativepushnotification.modules;
+package com.dieam.reactnativepushnotification;
 
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -12,19 +13,11 @@ import android.widget.ImageView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 
+import com.dieam.reactnativepushnotification.modules.RNPushNotification;
 import com.facebook.react.ReactActivity;
-import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import android.view.WindowManager;
-
-import java.util.List;
-
-/**
- * Activity to start from React Native JavaScript, triggered via
- * {@link RNPushNotification#navigateToExample()}.
- */
 
 public final class IncomingCallScreen extends ReactActivity implements Animation.AnimationListener {
 
