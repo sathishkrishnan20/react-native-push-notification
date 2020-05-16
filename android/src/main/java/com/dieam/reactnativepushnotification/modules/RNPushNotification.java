@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.dieam.reactnativepushnotification.IncomingCallScreen;
 import com.dieam.reactnativepushnotification.helpers.ApplicationBadgeHelper;
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -44,7 +45,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
         super(reactContext);
 
         reactContext.addActivityEventListener(this);
-        
+       new IncomingCallScreen(reactContext);
         Application applicationContext = (Application) reactContext.getApplicationContext();
 
         // The @ReactNative methods use this
