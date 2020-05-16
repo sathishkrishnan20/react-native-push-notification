@@ -16,10 +16,9 @@ var Notifications = {
 	onRegister: false,
 	onError: false,
 	onNotification: false,
-  onRemoteFetch: false,
+  	onRemoteFetch: false,
 	isLoaded: false,
 	hasPoppedInitialNotification: false,
-
 	isPermissionsRequestPending: false,
 
 	permissions: {
@@ -148,6 +147,18 @@ Notifications.localNotification = function(details: Object) {
 	}
 };
 
+Notifications.onFullScreenIntentActionRegister = function() {
+	Platform.OS === 'android' ? this.callNative( 'addEventListenerEmitterModule', [ 'callActionChange', this._onCallActionChange ] ) : null
+};
+Notifications.onFullScreenIntentActionUnregister = function() {
+	Platform.OS === 'android' ? this.callNative( 'removeEventListenerEmitterModule', [ 'callActionChange', this._onCallActionChange ] ) : null
+}; 
+
+
+Notifications._onCallActionChange = function(notificationData: Object) {
+	console.log('notificationData from On Call Change Node Module', notificationData);
+};
+
 /**
  * Local Notifications Schedule
  * @param {Object}		details (same as localNotification)
@@ -190,6 +201,7 @@ Notifications.localNotificationSchedule = function(details: Object) {
 		this.handler.scheduleLocalNotification(details);
 	}
 };
+
 
 /* Internal Functions */
 Notifications._onRegister = function(token: String) {

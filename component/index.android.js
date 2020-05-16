@@ -11,6 +11,7 @@ var _notifHandlers = new Map();
 var DEVICE_NOTIF_EVENT = 'remoteNotificationReceived';
 var NOTIF_REGISTER_EVENT = 'remoteNotificationsRegistered';
 var REMOTE_FETCH_EVENT = 'remoteFetch';
+var FULL_SCREEN_INTENT_CALL_ACTION_CHANGE = 'callActionChange';
 
 var NotificationsComponent = function() {
 
@@ -116,6 +117,29 @@ NotificationsComponent.prototype.clearAllNotifications = function() {
 	RNPushNotification.clearAllNotifications()
 }
 
+
+NotificationsComponent.prototype.addEventListenerEmitterModule = function(type: string, handler: Function) {
+	var listener;
+	if (type === 'callActionChange') {
+		listener =  DeviceEventEmitter.addListener(
+			FULL_SCREEN_INTENT_CALL_ACTION_CHANGE,
+			function(notifData) {
+				var data = JSON.parse(notifData);
+				handler(data);
+			}
+		);
+	} 
+
+	_notifHandlers.set(type, listener);
+};
+NotificationsComponent.prototype.removeEventListenerEmitterModule = function(type: string, handler: Function) {
+	var listener = _notifHandlers.get(type);
+	if (!listener) {
+		return;
+	}
+	listener.remove();
+	_notifHandlers.delete(type);
+}
 module.exports = {
 	state: false,
 	component: new NotificationsComponent()
