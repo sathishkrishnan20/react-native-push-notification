@@ -7,10 +7,13 @@ import com.google.firebase.messaging.RemoteMessage;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.Application;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
 
 import com.dieam.reactnativepushnotification.helpers.ApplicationBadgeHelper;
 import com.facebook.react.ReactApplication;
@@ -88,6 +91,7 @@ public class RNPushNotificationListenerService extends FirebaseMessagingService 
                 } else {
                     // Otherwise wait for construction, then send the notification
                     mReactInstanceManager.addReactInstanceEventListener(new ReactInstanceManager.ReactInstanceEventListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                         public void onReactContextInitialized(ReactContext context) {
                             handleRemotePushNotification((ReactApplicationContext) context, bundle);
                         }
@@ -109,6 +113,7 @@ public class RNPushNotificationListenerService extends FirebaseMessagingService 
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void handleRemotePushNotification(ReactApplicationContext context, Bundle bundle) {
 
         // If notification ID is not provided by the user for push notification, generate one at random
