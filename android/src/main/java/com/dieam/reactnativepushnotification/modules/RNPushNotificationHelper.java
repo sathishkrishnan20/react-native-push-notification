@@ -25,6 +25,7 @@ import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.dieam.reactnativepushnotification.IncomingCallScreen;
+
 import com.facebook.react.bridge.ReadableMap;
 
 import org.json.JSONArray;
@@ -190,7 +191,7 @@ public class RNPushNotificationHelper {
                         .setCategory(Notification.CATEGORY_CALL)
                         .setOngoing(true)
                         .setWhen(System.currentTimeMillis())
-                        //.setSmallIcon(res.getIdentifier(smallIcon, "mipmap", packageName))
+                        .setSmallIcon(android.R.drawable.btn_star)
                         .setTicker("Hearty365")
                         .setPriority(Notification.PRIORITY_HIGH)
                         .setContentTitle("Default notification")
