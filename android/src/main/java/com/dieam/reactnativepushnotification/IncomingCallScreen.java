@@ -2,6 +2,8 @@ package com.dieam.reactnativepushnotification;
 
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +22,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 
-public final class IncomingCallScreen extends Activity implements Animation.AnimationListener {
+public final class IncomingCallScreen extends ReactActivity implements Animation.AnimationListener {
     private ReactApplicationContext context;
     ImageView arrrowMark;
     Animation animSlideUp;
@@ -35,17 +37,20 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
 
 
 
-    public IncomingCallScreen(ReactApplicationContext activity) {
-       this.context =activity;
-    }
-    public IncomingCallScreen() {
-    }
+//    public IncomingCallScreen(ReactApplicationContext activity) {
+//       this.context = activity;
+//
+//        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+//        // ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+//    }
+//    public IncomingCallScreen() {
+//    }
 
     @Override
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        this.context = (ReactApplicationContext) getApplicationContext();
 
         /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);
