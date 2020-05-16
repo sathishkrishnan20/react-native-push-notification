@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 
+import com.dieam.reactnativepushnotification.modules.RNPushNotification;
 import com.dieam.reactnativepushnotification.modules.RNPushNotificationJsDelivery;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -36,7 +37,6 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
     public static final String HAS_DECLINED = "HAS_DECLINED";
     public static final String DESCRIPTION = "DESCRIPTION";
 
-    private static DeviceEventManagerModule.RCTDeviceEventEmitter eventEmitter = null;
 
     @Override
     @CallSuper
