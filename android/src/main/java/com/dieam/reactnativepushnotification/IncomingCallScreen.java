@@ -1,9 +1,6 @@
 package com.dieam.reactnativepushnotification;
 
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,10 +13,8 @@ import android.widget.ImageView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 
-import com.dieam.reactnativepushnotification.modules.RNPushNotification;
 import com.facebook.react.ReactActivity;
 import com.facebook.react.bridge.ReactApplicationContext;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 
 public final class IncomingCallScreen extends ReactActivity implements Animation.AnimationListener {
@@ -34,17 +29,6 @@ public final class IncomingCallScreen extends ReactActivity implements Animation
     public static final String HAS_DECLINED = "HAS_DECLINED";
     public static final String DESCRIPTION = "DESCRIPTION";
 
-
-
-
-//    public IncomingCallScreen(ReactApplicationContext activity) {
-//       this.context = activity;
-//
-//        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-//        // ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-//    }
-//    public IncomingCallScreen() {
-//    }
 
     @Override
     @CallSuper
@@ -95,9 +79,7 @@ public final class IncomingCallScreen extends ReactActivity implements Animation
 //                Intent intent = new Intent(ExampleActivity.this, MainActivity.class);
 //                startActivity(intent);
                 returnSuccessCallback(ACCEPT_CODE, "ACCEPTED");
-                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("callActionChange", "ACCEPTED");
-
+                EventEmitterModule.emitEvent("ACCEPTED");
 
             }
         });
@@ -112,9 +94,7 @@ public final class IncomingCallScreen extends ReactActivity implements Animation
                 //    instead of ReactActivity, but you can code it yourself if you want.
                 // The iOS version does not suffer from this problem.
                 returnErrorCallback(DECLINE_CODE, "DECLINED");
-                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                        .emit("callActionChange", "DECLINED");
-
+                EventEmitterModule.emitEvent("DECLINED");
             }
         });
 
