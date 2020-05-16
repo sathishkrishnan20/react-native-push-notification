@@ -22,7 +22,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public final class IncomingCallScreen extends Activity implements Animation.AnimationListener {
 
-    private final ReactApplicationContext context;
+    private ReactApplicationContext context;
     ImageView arrrowMark;
     Animation animSlideUp;
     public static final int REQUEST_CODE = 123;
@@ -37,6 +37,8 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
 
     public IncomingCallScreen(ReactApplicationContext context) {
         this.context = context;
+    }
+    public IncomingCallScreen() {
     }
 
     @Override
