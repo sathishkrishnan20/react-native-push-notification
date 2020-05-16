@@ -1,8 +1,6 @@
-package com.dieam.reactnativepushnotification;
+package com.dieam.reactnativepushnotification.modules;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,19 +12,23 @@ import android.widget.ImageView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.Nullable;
 
-import com.dieam.reactnativepushnotification.modules.RNPushNotification;
-import com.dieam.reactnativepushnotification.modules.RNPushNotificationJsDelivery;
 import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import android.view.WindowManager;
+
+import java.util.List;
+
 /**
  * Activity to start from React Native JavaScript, triggered via
- * {ActivityStarterModule#navigateToExample()}.
+ * {@link RNPushNotification#navigateToExample()}.
  */
-public final class IncomingCallScreen extends Activity implements Animation.AnimationListener {
 
+public final class IncomingCallScreen extends ReactActivity implements Animation.AnimationListener {
+
+    private final ReactApplicationContext context;
     ImageView arrrowMark;
     Animation animSlideUp;
     public static final int REQUEST_CODE = 123;
@@ -38,10 +40,16 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
     public static final String DESCRIPTION = "DESCRIPTION";
 
 
+
+    public IncomingCallScreen(ReactApplicationContext context) {
+        this.context = context;
+    }
+
     @Override
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);
@@ -87,7 +95,9 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
 //                Intent intent = new Intent(ExampleActivity.this, MainActivity.class);
 //                startActivity(intent);
                 returnSuccessCallback(ACCEPT_CODE, "ACCEPTED");
-                EventEmitterModule.emitEvent("accepted");
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("callActionChange", "ACCEPTED");
+
 
             }
         });
@@ -102,7 +112,9 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
                 //    instead of ReactActivity, but you can code it yourself if you want.
                 // The iOS version does not suffer from this problem.
                 returnErrorCallback(DECLINE_CODE, "DECLINED");
-                EventEmitterModule.emitEvent("declined");
+                context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                        .emit("callActionChange", "DECLINED");
+
             }
         });
 
@@ -158,6 +170,20 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
     public void onAnimationRepeat(Animation animation) {
 
     }
+    @Override
+    protected String getMainComponentName() {
+        return "RNPushNotification";
+    }
+
+    @Override
+    protected boolean getUseDeveloperSupport() {
+        return false;
+    }
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+        return null;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -182,4 +208,5 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
         onActivityResult(REQUEST_CODE, RESPONSE_CODE, returnIntent);
         this.finish();
     }
+
 }

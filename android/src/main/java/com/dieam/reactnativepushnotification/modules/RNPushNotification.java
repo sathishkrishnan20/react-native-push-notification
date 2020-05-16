@@ -7,7 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.dieam.reactnativepushnotification.helpers.ApplicationBadgeHelper;
@@ -146,6 +149,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
         FirebaseMessaging.getInstance().subscribeToTopic(topic);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @ReactMethod
     public void presentLocalNotification(ReadableMap details) {
         Bundle bundle = Arguments.toBundle(details);
@@ -236,5 +240,13 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
     @ReactMethod
     public void registerNotificationActions(ReadableArray actions) {
         registerNotificationsReceiveNotificationActions(actions);
+    }
+    @ReactMethod
+    void navigateToExample() {
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            Intent intent = new Intent(activity, IncomingCallScreen.class);
+            activity.startActivity(intent);
+        }
     }
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dieam.reactnativepushnotification">
+    package="com.dieam.reactnativepushnotification.modules">
 
     <application>
-        <activity android:name=".IncomingCallScreen" />
+        <activity android:name=".modules.IncomingCallScreen" />
     </application>
 
 </manifest>
