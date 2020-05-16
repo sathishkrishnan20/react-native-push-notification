@@ -3,7 +3,7 @@
     package="com.dieam.reactnativepushnotification">
 
     <application>
-        <activity android:name=".IncomingCallScreen"></activity>
+        <activity android:name=".IncomingCallScreen" />
     </application>
 
 </manifest>

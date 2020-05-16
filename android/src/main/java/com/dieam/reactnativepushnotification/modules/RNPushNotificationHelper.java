@@ -19,6 +19,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
@@ -136,6 +138,7 @@ public class RNPushNotificationHelper {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void sendToNotificationCentre(Bundle bundle) {
         try {
             Class intentClass = getMainActivityClass();
@@ -178,7 +181,7 @@ public class RNPushNotificationHelper {
                     notificationChannel.enableVibration(true);
                     notificationManager.createNotificationChannel(notificationChannel);
                 }
-                Log.d("FullScreenIntent", "Notification has been Build");
+                Log.d("FullScreenIntent", "Notification has been Building");
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, fullScreenIntent, 0);
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
                 String smallIcon = bundle.getString("smallIcon");
@@ -187,15 +190,15 @@ public class RNPushNotificationHelper {
                         .setCategory(Notification.CATEGORY_CALL)
                         .setOngoing(true)
                         .setWhen(System.currentTimeMillis())
-                        .setSmallIcon(res.getIdentifier(smallIcon, "mipmap", packageName))
+                        //.setSmallIcon(res.getIdentifier(smallIcon, "mipmap", packageName))
                         .setTicker("Hearty365")
-                        .setPriority(Notification.PRIORITY_MAX)
+                        .setPriority(Notification.PRIORITY_HIGH)
                         .setContentTitle("Default notification")
                         .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
                         .setFullScreenIntent(pendingIntent,true)
                         .setContentInfo("Info");
                 notificationManager.notify(/*notification id*/Integer.parseInt(notificationIdString), notificationBuilder.build());
-
+                Log.d("FullScreenIntent", "Notification has build");
 
 
             } else {
