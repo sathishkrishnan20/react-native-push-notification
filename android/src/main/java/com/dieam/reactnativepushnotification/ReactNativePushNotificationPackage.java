@@ -15,10 +15,8 @@ import java.util.List;
 public class ReactNativePushNotificationPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
-        List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNPushNotification(reactContext));
+        List<NativeModule> modules = Collections.<NativeModule>singletonList(new RNPushNotification(reactContext));
         modules.add(new EventEmitterModule(reactContext));
-
         return modules;
     }
 

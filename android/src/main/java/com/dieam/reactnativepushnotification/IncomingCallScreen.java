@@ -50,7 +50,6 @@ public final class IncomingCallScreen extends ReactActivity implements Animation
     @CallSuper
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.context = (ReactApplicationContext) getApplicationContext();
 
         /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true);
