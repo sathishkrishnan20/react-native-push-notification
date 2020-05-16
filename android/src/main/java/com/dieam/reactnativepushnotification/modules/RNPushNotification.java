@@ -44,7 +44,7 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
         super(reactContext);
 
         reactContext.addActivityEventListener(this);
-
+        
         Application applicationContext = (Application) reactContext.getApplicationContext();
 
         // The @ReactNative methods use this

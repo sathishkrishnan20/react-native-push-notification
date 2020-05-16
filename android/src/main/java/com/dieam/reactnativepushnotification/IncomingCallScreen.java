@@ -36,7 +36,9 @@ public final class IncomingCallScreen extends Activity implements Animation.Anim
 
 
     public IncomingCallScreen(ReactApplicationContext activity) {
-        this.context = activity;
+       this.context =activity;
+    }
+    public IncomingCallScreen() {
     }
 
     @Override
