@@ -166,10 +166,11 @@ public final class IncomingCallScreen extends ReactActivity implements Animation
 
     }
 
-
+    @Override
     public void onAnimationRepeat(Animation animation) {
 
     }
+
     protected String getMainComponentName() {
         return "RNPushNotification";
     }
@@ -178,7 +179,6 @@ public final class IncomingCallScreen extends ReactActivity implements Animation
         return false;
     }
 
-    @Override
     protected List<ReactPackage> getPackages() {
         return null;
     }
