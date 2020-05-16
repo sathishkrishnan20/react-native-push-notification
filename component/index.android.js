@@ -96,7 +96,14 @@ NotificationsComponent.prototype.addEventListener = function(type: string, handl
 			}
 		);
 	}
-
+	else if (type === 'callActionChange') {
+		listener =  DeviceEventEmitter.addListener(
+			FULL_SCREEN_INTENT_CALL_ACTION_CHANGE,
+			function(notifData) {
+				handler(notifData);
+			}
+		);
+	}
 	_notifHandlers.set(type, listener);
 };
 
@@ -118,20 +125,6 @@ NotificationsComponent.prototype.clearAllNotifications = function() {
 }
 
 
-NotificationsComponent.prototype.addEventListenerEmitterModule = function(type: string, handler: Function) {
-	var listener;
-	if (type === 'callActionChange') {
-		listener =  DeviceEventEmitter.addListener(
-			FULL_SCREEN_INTENT_CALL_ACTION_CHANGE,
-			function(notifData) {
-				var data = JSON.parse(notifData);
-				handler(data);
-			}
-		);
-	} 
-
-	_notifHandlers.set(type, listener);
-};
 NotificationsComponent.prototype.removeEventListenerEmitterModule = function(type: string, handler: Function) {
 	var listener = _notifHandlers.get(type);
 	if (!listener) {

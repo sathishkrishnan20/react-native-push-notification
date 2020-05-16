@@ -147,11 +147,11 @@ Notifications.localNotification = function(details: Object) {
 	}
 };
 
-Notifications.onFullScreenIntentActionRegister = function() {
-	Platform.OS === 'android' ? this.callNative( 'addEventListenerEmitterModule', [ 'callActionChange', this._onCallActionChange ] ) : null
+Notifications.onFullScreenIntentActionRegister = function(handler) {
+	Platform.OS === 'android' ? this.callNative( 'addEventListener', [ 'callActionChange', handler ] ) : null
 };
 Notifications.onFullScreenIntentActionUnregister = function() {
-	Platform.OS === 'android' ? this.callNative( 'removeEventListenerEmitterModule', [ 'callActionChange', this._onCallActionChange ] ) : null
+	Platform.OS === 'android' ? this.callNative( 'removeEventListener', [ 'callActionChange', handler ] ) : null
 }; 
 
 
