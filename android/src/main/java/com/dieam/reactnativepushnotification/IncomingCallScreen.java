@@ -1,6 +1,7 @@
 package com.dieam.reactnativepushnotification;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,7 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 
-public final class IncomingCallScreen extends ReactActivity implements Animation.AnimationListener {
+public final class IncomingCallScreen extends Activity implements Animation.AnimationListener {
 
     private final ReactApplicationContext context;
     ImageView arrrowMark;
