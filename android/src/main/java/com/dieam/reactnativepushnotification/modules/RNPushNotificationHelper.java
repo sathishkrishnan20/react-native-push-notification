@@ -158,12 +158,15 @@ public class RNPushNotificationHelper {
 
             Resources res = context.getResources();
             String packageName = context.getPackageName();
-            Boolean hasFullScreenIntent =  bundle.getBoolean("fullScreenIntent", false);
-            if (hasFullScreenIntent == true) {
+            boolean hasFullScreenIntent =  bundle.getBoolean("fullScreenIntent", false);
+            Log.d("FullScreenIntent", "has Full Screen Intent " + hasFullScreenIntent);
+            if (hasFullScreenIntent) {
+                Log.d("FullScreenIntent", "Entering to Full Screen Intent");
                 String NOTIFICATION_CHANNEL_ID = "my_channel_id_01";
 
                 Intent fullScreenIntent = new Intent(context, IncomingCallScreen.class);
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Log.d("FullScreenIntent", "Building the Notification");
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "MEDFLIC_PT_CHANNEL", NotificationManager.IMPORTANCE_HIGH);
 
@@ -175,6 +178,7 @@ public class RNPushNotificationHelper {
                     notificationChannel.enableVibration(true);
                     notificationManager.createNotificationChannel(notificationChannel);
                 }
+                Log.d("FullScreenIntent", "Notification has been Build");
                 PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, fullScreenIntent, 0);
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
                 String smallIcon = bundle.getString("smallIcon");
