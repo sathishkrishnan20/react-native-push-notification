@@ -158,6 +158,14 @@ public class RNPushNotificationHelper {
                 Log.e(LOG_TAG, "No notification ID specified for the notification");
                 return;
             }
+            String isDND = bundle.getString("RN_DND");
+            Log.d("FullScreenIntent", "DND Number" + isDND);
+            if (isDND.equals("1")) {
+                Log.e(LOG_TAG, "DO NOT Disturb is Enabled Returning to false without Creating Notification");
+                return;
+            }
+
+
 
             Resources res = context.getResources();
             String packageName = context.getPackageName();
