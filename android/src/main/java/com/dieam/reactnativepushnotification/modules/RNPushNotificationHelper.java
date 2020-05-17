@@ -162,6 +162,12 @@ public class RNPushNotificationHelper {
             Resources res = context.getResources();
             String packageName = context.getPackageName();
             boolean hasFullScreenIntent =  bundle.getBoolean("fullScreenIntent", false);
+            String title = bundle.getString("title");
+            if (title == null) {
+                ApplicationInfo appInfo = context.getApplicationInfo();
+                title = context.getPackageManager().getApplicationLabel(appInfo).toString();
+            }
+
             Log.d("FullScreenIntent", "has Full Screen Intent " + hasFullScreenIntent);
             if (hasFullScreenIntent) {
                 Log.d("FullScreenIntent", "Entering to Full Screen Intent");
@@ -174,7 +180,7 @@ public class RNPushNotificationHelper {
                     NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "MEDFLIC_PT_CHANNEL", NotificationManager.IMPORTANCE_HIGH);
 
                     // Configure the notification channel.
-                    notificationChannel.setDescription("Channel description");
+                    notificationChannel.setDescription("Medflic Video Call Full Screen Notifications");
                     notificationChannel.enableLights(true);
                     notificationChannel.setLightColor(Color.rgb(0,0,0));
                     notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
@@ -191,22 +197,18 @@ public class RNPushNotificationHelper {
                         .setOngoing(true)
                         .setWhen(System.currentTimeMillis())
                         .setSmallIcon(android.R.drawable.btn_star)
-                        .setTicker("Hearty365")
+                        .setTicker(bundle.getString("ticker"))
                         .setPriority(Notification.PRIORITY_HIGH)
-                        .setContentTitle("Default notification")
-                        .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                        .setContentTitle(title)
+                        .setContentText(bundle.getString("message"))
                         .setFullScreenIntent(pendingIntent,true)
                         .setContentInfo("Info");
-                notificationManager.notify(/*notification id*/Integer.parseInt(notificationIdString), notificationBuilder.build());
+
+                notificationManager.notify(Integer.parseInt(notificationIdString), notificationBuilder.build());
                 Log.d("FullScreenIntent", "Notification has build");
 
 
             } else {
-                String title = bundle.getString("title");
-                if (title == null) {
-                    ApplicationInfo appInfo = context.getApplicationInfo();
-                    title = context.getPackageManager().getApplicationLabel(appInfo).toString();
-                }
 
                 int priority = NotificationCompat.PRIORITY_HIGH;
                 final String priorityString = bundle.getString("priority");
