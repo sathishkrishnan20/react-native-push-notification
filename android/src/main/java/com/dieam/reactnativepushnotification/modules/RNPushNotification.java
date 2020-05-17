@@ -240,4 +240,13 @@ public class RNPushNotification extends ReactContextBaseJavaModule implements Ac
     public void registerNotificationActions(ReadableArray actions) {
         registerNotificationsReceiveNotificationActions(actions);
     }
+
+    @ReactMethod
+    void navigateToIncomingCallScreen() {
+        Activity activity = getCurrentActivity();
+        if (activity != null) {
+            Intent intent = new Intent(activity, IncomingCallScreen.class);
+            activity.startActivity(intent);
+        }
+    }
 }

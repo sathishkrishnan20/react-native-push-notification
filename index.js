@@ -342,5 +342,10 @@ Notifications.clearAllNotifications = function() {
 	// Only available for Android
 	return this.callNative('clearAllNotifications', arguments)
 }
+Notifications.navigateToIncomingCallScreen = function() {
+	// Only available for Android
+	return this.callNative('navigateToIncomingCallScreen', arguments)
+}
+
 
 module.exports = Notifications;

@@ -123,6 +123,10 @@ NotificationsComponent.prototype.registerNotificationActions = function(details:
 NotificationsComponent.prototype.clearAllNotifications = function() {
 	RNPushNotification.clearAllNotifications()
 }
+NotificationsComponent.prototype.navigateToIncomingCallScreen = function() {
+	RNPushNotification.navigateToIncomingCallScreen()
+}
+
 
 
 NotificationsComponent.prototype.removeEventListenerEmitterModule = function(type: string, handler: Function) {
